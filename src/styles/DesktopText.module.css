@@ -1,0 +1,5 @@
+.DesktopText {
+    @apply text-white font-normal text-base hover:bg-button-gradient hover:bg-clip-text hover:text-transparent transition-all duration-300;
+}
+
+

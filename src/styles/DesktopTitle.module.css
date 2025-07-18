@@ -1,0 +1,6 @@
+.DesktopTitle {
+    @apply text-[80px] font-semibold text-white text-center m-0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+
+}
