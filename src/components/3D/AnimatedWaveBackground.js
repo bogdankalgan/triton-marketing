@@ -1,7 +1,7 @@
 import {useRef, useEffect} from "react";
 import * as THREE from "three";
-import vertexShader from "../shaders/waveVertex.glsl";
-import fragmentShader from "../shaders/waveFragment.glsl";
+import vertexShader from "../../shaders/waveVertex.glsl";
+import fragmentShader from "../../shaders/waveFragment.glsl";
 
 const AnimatedWaveBackground = () => {
     const mouse = useRef(new THREE.Vector2(0.5, 0.5));
@@ -21,9 +21,11 @@ const AnimatedWaveBackground = () => {
         })
     }
 
+
     useEffect(() => {
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
+        const mount = mountRef.current;
+        mount.addEventListener('mousemove', handleMouseMove);
+        return () => mount.removeEventListener('mousemove', handleMouseMove);
     }, []);
 
     useEffect(() => {
@@ -31,9 +33,11 @@ const AnimatedWaveBackground = () => {
         const {width, height} = mount.getBoundingClientRect();
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(50, width/height, 0.1, 1000);
-        camera.position.z = 3;
-        camera.position.y = -0.5
+        const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+        camera.position.set(0.0016908645969150383, 2.7291158701815688, 0.013446303317364051);
+        camera.lookAt(0, 0, 1);
+
+
 
         const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
         renderer.setSize(width, height)
@@ -43,7 +47,7 @@ const AnimatedWaveBackground = () => {
         const clock = new THREE.Clock();
 
         const createWave = ({colorA, colorB, yOffset, zOffset, speed, opacity, amplitude, index, totalWaves, mouse}) => {
-            const geometry = new THREE.PlaneGeometry(100, 2, 2000, 1);
+            const geometry = new THREE.PlaneGeometry(3, 6, 200, 200);
 
             const material = new THREE.ShaderMaterial({
                 vertexShader,
@@ -58,7 +62,7 @@ const AnimatedWaveBackground = () => {
                     uResolution: {value: new THREE.Vector2(width, height)},
                     uOffset: {value: Math.random() * 10},
                     uIndex: {value: index / totalWaves},
-                    uMouse: {value: new THREE.Vector2(0.5, 0,5)},
+                    uMouse: {value: new THREE.Vector2(0.5, 0.5)},
                 },
                 transparent: true,
                 depthWrite: false,
@@ -67,7 +71,7 @@ const AnimatedWaveBackground = () => {
             });
 
             const mesh = new THREE.Mesh(geometry, material);
-            mesh.position.y = yOffset;
+            mesh.position.y = 1;
             mesh.position.z = zOffset;
             scene.add(mesh);
             meshesRef.current.push({mesh, material})
@@ -77,49 +81,67 @@ const AnimatedWaveBackground = () => {
 
         const waves = [
             {
-                colorA: [0.8, 0.2, 0.6],
-                colorB: [0.1, 0.0, 0.3],
+                colorA: [1.5, 0.3, 1.5],
+                colorB: [0.2, 0.0, 0.3],
                 yOffset: 0,
                 zOffset: 0,
-                speed: 0.1,
-                opacity: 0.5,
+                speed: 0.8,
+                opacity: 0.35,
                 amplitude: 0.6,
             },
             {
-                colorA: [0.3, 0.8, 1.0],
+                colorA: [0.3, 0.6, 1.5],
                 colorB: [0.0, 0.0, 0.2],
-                yOffset: 0.05,
-                zOffset: -0.1,
-                speed: 0.2,
-                opacity: 0.2,
-                amplitude: 0.15,
-            },
-            {
-                colorA: [0.5, 0.0, 0.6],
-                colorB: [0.2, 0.0, 0.3],
-                yOffset: -0.05,
+                yOffset: 0,
                 zOffset: -0.2,
-                speed: 0.4,
-                opacity: 0.15,
-                amplitude: 0.1,
+                speed: 1.0,
+                opacity: 0.3,
+                amplitude: 0.55,
             },
             {
-                colorA: [0.1, 0.4, 0.8],
-                colorB: [0.0, 0.0, 0.2],
-                yOffset: 0.08,
-                zOffset: -0.3,
-                speed: 0.5,
-                opacity: 0.15,
-                amplitude: 0.25,
-            },
-            {
-                colorA: [0.7, 0.2, 0.6],
-                colorB: [0.1, 0.0, 0.2],
-                yOffset: -0.08,
+                colorA: [1.2, 0.0, 0.6],
+                colorB: [0.3, 0.0, 0.3],
+                yOffset: 0,
                 zOffset: -0.4,
-                speed: 0.6,
-                opacity: 0.1,
-                amplitude: 0.2,
+                speed: 1.2,
+                opacity: 0.25,
+                amplitude: 0.5,
+            },
+            {
+                colorA: [0.5, 0.3, 1.2],
+                colorB: [0.0, 0.0, 0.2],
+                yOffset: 0,
+                zOffset: -0.6,
+                speed: 1.4,
+                opacity: 0.2,
+                amplitude: 0.45,
+            },
+            {
+                colorA: [1.0, 0.2, 1.0],
+                colorB: [0.2, 0.0, 0.2],
+                yOffset: 0,
+                zOffset: -0.8,
+                speed: 1.6,
+                opacity: 0.18,
+                amplitude: 0.4,
+            },
+            {
+                colorA: [0.6, 0.4, 1.4],
+                colorB: [0.1, 0.0, 0.3],
+                yOffset: 0,
+                zOffset: -1.0,
+                speed: 1.8,
+                opacity: 0.16,
+                amplitude: 0.35,
+            },
+            {
+                colorA: [1.4, 0.1, 0.6],
+                colorB: [0.2, 0.0, 0.1],
+                yOffset: 0,
+                zOffset: -1.2,
+                speed: 2.0,
+                opacity: 0.14,
+                amplitude: 0.3,
             },
         ];
 
@@ -161,8 +183,7 @@ const AnimatedWaveBackground = () => {
         }
     }, []);
 
-
-    return <div ref={mountRef} className="absolute inset-0 -top-[30px] w-full h-[700px] z-0"></div>
+    return <div ref={mountRef} className="absolute top-0 w-full h-[696px] z-0"></div>
 }
 
 export default AnimatedWaveBackground;
