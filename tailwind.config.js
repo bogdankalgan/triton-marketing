@@ -1,6 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+      "src/components/**/*.{js,ts,jsx,tsx}",
+      "src/pages/**/*.{js,ts,jsx,tsx}",
+
+      "!./node_modules/**",
+      "!./src/shaders/**",
+      "!./src/styles/**",
+
+    {
+      files: "./src/**/*.{js,jsx, ts, tsx}",
+      transform: (content) => content.match(/class[Name]*\s*[:=]\s*["`']([^"`']*)["`']/g) || []
+    },
+  ],
   theme: {
     extend: {
       fontFamily: {
